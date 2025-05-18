@@ -1,6 +1,6 @@
 name: build and test
 
-on: [push]
+on: [push, workflow_dispatch]
 
 jobs:
   build-and-test:
@@ -28,7 +28,7 @@ jobs:
           cp package-lock.json output/
           zip -r build.zip output
       - name: Upload build artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: build-zip
           path: build.zip
