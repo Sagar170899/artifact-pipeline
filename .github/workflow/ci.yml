@@ -1,0 +1,34 @@
+name: build and test
+
+on: [push]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '23.x'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
+
+      - name: Package build output zip
+        run: |
+          mkdir -p output
+          cp -r src output/
+          cp package.json output/
+          cp package-lock.json output/
+          zip -r build.zip output
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-zip
+          path: build.zip
